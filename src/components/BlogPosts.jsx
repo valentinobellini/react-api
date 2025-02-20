@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const blogPosts = [
     {
@@ -58,10 +59,26 @@ const initialPostData = {
 export default function BlogPost() {
 
     // stato della lista posts 
-    const [posts, setPosts] = useState(blogPosts)
+    const [posts, setPosts] = useState([])
     // stato dell'input inserimento in form
     // const [newPost, setNewPost] = useState(initialPostData);
     const [formData, setFormData] = useState(initialPostData);
+
+
+
+
+    // funzione di gestione chiamata all'API
+    function fetchPosts() {
+        axios.get("http://localhost:3000/posts/")
+            .then((res) => {
+                console.log("dati ricevuti da API", res.data),
+
+                    setPosts(res.data)
+                // console.log(res.data)
+            })
+    }
+
+    useEffect(fetchPosts, []);
 
 
 
@@ -191,7 +208,7 @@ export default function BlogPost() {
                                 <input
                                     type="checkbox"
                                     name="magic"
-                                    checked={formData.available}
+                                    checked={formData.magic}
                                     onChange={handleFormData}
                                     id="magic"
                                 />
