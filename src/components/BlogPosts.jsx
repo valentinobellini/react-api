@@ -218,7 +218,7 @@ export default function BlogPosts() {
                                 onChange={handleFormData}
                                 placeholder="Categoria"
                             />
-                            <div className="magic">
+                            {/* <div className="magic">
                                 <label htmlFor="magic">Richiede Magia</label>
                                 <input
                                     type="checkbox"
@@ -227,7 +227,7 @@ export default function BlogPosts() {
                                     onChange={handleFormData}
                                     id="magic"
                                 />
-                            </div>
+                            </div> */}
 
 
                         </div>
