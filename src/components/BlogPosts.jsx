@@ -128,7 +128,14 @@ export default function BlogPosts() {
         const updatedPosts = posts.filter((post) => {
             return post.id !== id
         });
-        setPosts(updatedPosts);
+
+        axios.delete(`http://localhost:3000/posts/${id}`)
+            .then(res =>
+                console.log(res),
+
+                setPosts(updatedPosts)
+            )
+            .catch(err => console.log(err))
     }
 
 
