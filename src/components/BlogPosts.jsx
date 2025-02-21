@@ -56,30 +56,25 @@ const initialPostData = {
 };
 
 
-export default function BlogPost() {
+export default function BlogPosts() {
 
     // stato della lista posts 
     const [posts, setPosts] = useState([])
+
     // stato dell'input inserimento in form
-    // const [newPost, setNewPost] = useState(initialPostData);
     const [formData, setFormData] = useState(initialPostData);
 
 
 
-
-    // funzione di gestione chiamata all'API
+    // funzione di gestione chiamata all'API per fetchare lista post al montaggio componente
     function fetchPosts() {
         axios.get("http://localhost:3000/posts/")
             .then((res) => {
-                console.log("dati ricevuti da API", res.data),
-
-                    setPosts(res.data)
+                setPosts(res.data)
                 // console.log(res.data)
             })
     }
-
     useEffect(fetchPosts, []);
-
 
 
 
@@ -101,17 +96,27 @@ export default function BlogPost() {
     }
 
 
+
     // !! funzione di gestione evento INVIO INTERO FORM (onSubmit) e quindi per l'aggiunta di un nuovo post alla lista
-    const addPost = e => {
+    function addPost(e) {
         e.preventDefault();
         // crea nuovo oggetto post
-        const newPostObject = {
-            id: posts.length === 0 ? 1 : posts[posts.length - 1].id + 1,
-            ...formData
-        };
-        // aggiungi il nuovo post alla lista
-        const updatedPosts = [...posts, newPostObject];
-        setPosts(updatedPosts);
+
+        // const newPostObject = {
+        //     id: posts.length === 0 ? 1 : posts[posts.length - 1].id + 1,
+        //     ...formData
+        // };
+
+
+        // esegui richiesta POST per inviare i dati del form al backend
+        axios.post("http://localhost:3000/posts/", formData)
+            .then((res) => {
+                // aggiungi il nuovo post alla lista in pagina tramite setState
+                setPosts((currentPosts) => [...currentPosts, res.data])
+            })
+            .catch(err => console.log(err));
+
+
         // azzera i valori del form
         setFormData(initialPostData);
     }
@@ -137,10 +142,13 @@ export default function BlogPost() {
 
 
 
+
+
+
     return (
         <>
 
-
+            {/* markup pagina */}
             <div className="main-wrapper">
 
                 {posts.length === 0 ? <p className="empty-message">La lista di ricette è vuota</p> :
